@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Data Entry</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Student Data Entry</h2>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="id">Student ID:</label>
+        <input type="text" id="id" name="id" required><br>
+        <button type="button" onclick="addStudent()">Add Student</button>
+    </form>
+    
+    <h2>Student Data Sheet</h2>
+    <table id="dataTable">
+        <tr>
+            <th>Name</th>
+            <th>Student ID</th>
+        </tr>
+    </table>
+</div>
+
+<script>
+    // Load saved student data when the page is opened
+    window.onload = function() {
+        var savedData = JSON.parse(localStorage.getItem('studentData'));
+        if (savedData) {
+            savedData.forEach(function(student) {
+                addRow(student.name, student.id);
+            });
+        }
+    }
+
+    function addStudent() {
+        var name = document.getElementById("name").value;
+        var id = document.getElementById("id").value;
+
+        addRow(name, id);
+
+        // Save the data to localStorage
+        var studentData = JSON.parse(localStorage.getItem('studentData')) || [];
+        studentData.push({name: name, id: id});
+        localStorage.setItem('studentData', JSON.stringify(studentData));
+
+        document.getElementById("dataForm").reset();
+    }
+
+    function addRow(name, id) {
+        var table = document.getElementById("dataTable");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = name;
+        cell2.innerHTML = id;
+    }
+</script>
+
+</body>
+</html>
